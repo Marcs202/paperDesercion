@@ -36,26 +36,33 @@ st.subheader("Ingrese los datos requeridos para la predicción")
 # Diccionario para mostrar nombres amigables y tipo de input
 feature_labels = {
     'num__TotalMateriasAprobadas_Anio1': ("Total Materias Aprobadas Año 1", 'number'),
-    'cat_low__Ind_Avance_0': ("¿No avanzó de año? (0=No, 1=Sí)", 'select'),
-    'cat_low__Ind_Solvencia_1': ("¿Solvente en pagos? (0=No, 1=Sí)", 'select'),
     'num__TotalMateriasInscritas_Anio1': ("Total Materias Inscritas Año 1", 'number'),
-    'num__MateriasAprobadas_C2': ("Materias Aprobadas Ciclo 2", 'number'),
-    'num__AvanceCarrera_FinAnio1': ("% Avance Carrera al Final Año 1", 'number'),
-    'num__TasaAprobacion_C2': ("Tasa de Aprobación Ciclo 2 (0-1)", 'number'),
-    'cat_low__Ind_Avance_1': ("¿Avanzó de año? (0=No, 1=Sí)", 'select'),
-    'cat_low__Ind_CambioCarrera_0': ("¿No cambió de carrera? (0=No, 1=Sí)", 'select'),
-    'cat_low__CantCambiosCarrera_1': ("Cantidad de Cambios de Carrera = 1", 'select'),
     'cat_low__Ind_CambioCarrera_1': ("¿Cambió de carrera? (0=No, 1=Sí)", 'select'),
-    'cat_low__CantCambiosCarrera_0': ("Cantidad de Cambios de Carrera = 0", 'select'),
-    'cat_low__Ind_Solvencia_0': ("¿No es solvente en pagos? (0=No, 1=Sí)", 'select'),
-    'num__MateriasInscritas_C2': ("Materias Inscritas Ciclo 2", 'number'),
-    'num__PromedioCiclo_C2': ("Promedio Ciclo 2 (0-10)", 'number'),
 }
+
+
+# Lista de features a excluir
+features_a_excluir = [
+    'cat_low__Ind_Avance_0',
+    'num__AvanceCarrera_FinAnio1',
+    'num__TasaAprobacion_C2',
+    'cat_low__Ind_Avance_1',
+    'cat_low__CantCambiosCarrera_1',
+    'cat_low__Ind_CambioCarrera_0',
+    'num__MateriasInscritas_C2',
+    'cat_low__Ind_Solvencia_0',
+    'cat_low__Ind_Solvencia_1',
+    'cat_low__CantCambiosCarrera_0',
+    'num__PromedioCiclo_C2',
+    'num__MateriasAprobadas_C2',
+]
 
 user_input = {}
 
 with st.form("form_prediccion"):
     for feat in feature_columns:
+        if feat in features_a_excluir:
+            continue
         label, tipo = feature_labels.get(feat, (feat, 'number'))
         if tipo == 'number':
             user_input[feat] = st.number_input(label, value=0.0, step=1.0 if 'Promedio' not in label and 'Tasa' not in label else 0.01)
@@ -63,9 +70,12 @@ with st.form("form_prediccion"):
             user_input[feat] = st.selectbox(label, [0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
     submitted = st.form_submit_button("Predecir Deserción", type="primary")
 
+
 if submitted:
     try:
-        input_df = pd.DataFrame([user_input])[feature_columns]
+        # Solo usar features que no están excluidas
+        features_usar = [f for f in feature_columns if f not in features_a_excluir]
+        input_df = pd.DataFrame([user_input])[features_usar]
         prediction = model.predict(input_df)[0]
         probability = model.predict_proba(input_df)[0]
         st.success("Predicción completada correctamente")
