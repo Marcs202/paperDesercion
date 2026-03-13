@@ -11,10 +11,14 @@ st.set_page_config(
 )
 
 
+
+import os
+
 @st.cache_resource
 def load_model():
-    model = joblib.load('modelo_final_desercion.pkl')
-    feature_columns = joblib.load('feature_columns.pkl')
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    model = joblib.load(os.path.join(BASE_DIR, 'modelo_final_desercion.pkl'))
+    feature_columns = joblib.load(os.path.join(BASE_DIR, 'feature_columns.pkl'))
     return model, feature_columns
 
 try:
