@@ -38,6 +38,10 @@ feature_labels = {
     'num__TotalMateriasAprobadas_Anio1': ("Total Materias Aprobadas Año 1", 'number'),
     'num__TotalMateriasInscritas_Anio1': ("Total Materias Inscritas Año 1", 'number'),
     'cat_low__Ind_CambioCarrera_1': ("¿Cambió de carrera? (0=No, 1=Sí)", 'select'),
+    'PromedioGeneral_Anio1': ("Promedio General Año 1", 'number'),
+    'TotalMateriasReprobadas_Anio1': ("Total Materias Reprobadas Año 1", 'number'),
+    'IRE_Total': ("Índice de Rendimiento Estudiantil Total (IRE)", 'number'),
+    'CantRetirosParciales': ("Cantidad de Retiros Parciales", 'number'),
 }
 
 
