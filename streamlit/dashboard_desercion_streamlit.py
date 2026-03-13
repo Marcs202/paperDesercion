@@ -253,18 +253,9 @@ def evaluate_model(model, X_test, y_test):
 # Sidebar - Configuración
 st.sidebar.title("Configuracion")
 
-# Selector de archivo
-data_file_options = {
-    "Dataset Principal (2015-2019)": "Tbl_DesercionEstudiantil_PrimerAnio_2015_2019.csv",
-    "Dataset Completo": "Tbl_DesercionEstudiantil_PrimerAnio_.csv"
-}
 
-selected_dataset = st.sidebar.selectbox(
-    "Seleccionar Dataset",
-    options=list(data_file_options.keys())
-)
-
-data_file = data_file_options[selected_dataset]
+# Archivo único de datos
+data_file = "dbo.DesercionEstudiantil_PrimerAnio.csv"
 
 max_samples = st.sidebar.slider(
     "Maximo de muestras",
@@ -648,25 +639,24 @@ else:
     st.markdown("""
     ### Instrucciones de Uso
     
-    1. **Seleccionar Dataset**: En la barra lateral, elige entre el dataset principal (2015-2019) o el completo.
-    2. **Ajustar Parametros**: Define el numero maximo de muestras y el tamano del conjunto de prueba.
-    3. **Entrenar Modelos**: Presiona el boton para iniciar el entrenamiento y comparacion de modelos.
-    4. **Analizar Resultados**: Explora las metricas, graficos y analisis detallados de cada modelo.
+    1. **Ajustar Parámetros**: Define el número máximo de muestras y el tamaño del conjunto de prueba.
+    2. **Entrenar Modelos**: Presiona el botón para iniciar el entrenamiento y comparación de modelos.
+    3. **Analizar Resultados**: Explora las métricas, gráficos y análisis detallados de cada modelo.
     
     ### Modelos Incluidos
     
-    - **Regresion Logistica**: Modelo baseline, interpretable y rapido
+    - **Regresión Logística**: Modelo baseline, interpretable y rápido
     - **K-Nearest Neighbors**: Modelo basado en similitud
     - **XGBoost**: Modelo de ensamble con gradient boosting
     
-    ### Metricas Evaluadas
+    ### Métricas Evaluadas
     
-    - **F1-Score**: Balance entre precision y recall
+    - **F1-Score**: Balance entre precisión y recall
     - **Recall**: Capacidad de detectar casos positivos
-    - **Precision**: Exactitud de las predicciones positivas
-    - **Accuracy**: Precision general del modelo
-    - **ROC-AUC**: Area bajo la curva ROC
-    - **PR-AUC**: Area bajo la curva Precision-Recall
+    - **Precisión**: Exactitud de las predicciones positivas
+    - **Accuracy**: Precisión general del modelo
+    - **ROC-AUC**: Área bajo la curva ROC
+    - **PR-AUC**: Área bajo la curva Precision-Recall
     """)
 
 # Footer
