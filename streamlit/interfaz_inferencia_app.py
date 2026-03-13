@@ -64,14 +64,22 @@ features_a_excluir = [
 user_input = {}
 
 with st.form("form_prediccion"):
-    for feat in feature_columns:
-        if feat in features_a_excluir:
-            continue
-        label, tipo = feature_labels.get(feat, (feat, 'number'))
-        if tipo == 'number':
-            user_input[feat] = st.number_input(label, value=0.0, step=1.0 if 'Promedio' not in label and 'Tasa' not in label else 0.01)
-        elif tipo == 'select':
-            user_input[feat] = st.selectbox(label, [0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
+    # Filtrar features activas
+    features_activas = [f for f in feature_columns if f not in features_a_excluir]
+
+    # Mostrar en grid de 2 columnas
+    for i in range(0, len(features_activas), 2):
+        cols = st.columns(2)
+        for j, col in enumerate(cols):
+            idx = i + j
+            if idx < len(features_activas):
+                feat = features_activas[idx]
+                label, tipo = feature_labels.get(feat, (feat, 'number'))
+                with col:
+                    if tipo == 'number':
+                        user_input[feat] = st.number_input(label, value=0.0, step=1.0 if 'Promedio' not in label and 'Tasa' not in label and 'IRE' not in label else 0.01)
+                    elif tipo == 'select':
+                        user_input[feat] = st.selectbox(label, [0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
     submitted = st.form_submit_button("Predecir Deserción", type="primary")
 
 
