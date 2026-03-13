@@ -29,7 +29,7 @@ except FileNotFoundError:
     st.stop()
 
 st.title("Predicción de Deserción Estudiantil")
-st.write(f"Modelo: **{model_name}** (entrenado y optimizado)")
+st.write(f"Modelo: **{model_name}** (Mejor Modelo Entrenado)")
 st.divider()
 st.subheader("Ingrese los datos requeridos para la predicción")
 
