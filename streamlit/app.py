@@ -1,34 +1,15 @@
-import streamlit as st
-import joblib
-import pandas as pd
-
-# Configuracion de la pagina
-st.set_page_config(
-    page_title="Prediccion de Desercion Estudiantil",
-    page_icon="🎓",
-    layout="wide"
-)
-
-# Cargar modelo y columnas (se cachea para no recargar en cada interaccion)
-@st.cache_resource
-def load_model():
-    """
-    Carga el modelo entrenado y las columnas de features.
-    @st.cache_resource hace que esto se ejecute una sola vez.
-    """
-    model = joblib.load('modelo_final_desercion.pkl')
-    feature_columns = joblib.load('feature_columns.pkl')
-    return model, feature_columns
 
 import streamlit as st
 import joblib
 import pandas as pd
 
+# st.set_page_config debe ser la primera llamada de Streamlit
 st.set_page_config(
     page_title="Predicción de Deserción Estudiantil",
     page_icon="🎓",
     layout="centered"
 )
+
 
 @st.cache_resource
 def load_model():
