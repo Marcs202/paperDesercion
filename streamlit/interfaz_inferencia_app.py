@@ -67,6 +67,7 @@ with st.form("form_prediccion"):
             user_input["IdCampus"] = st.number_input("ID Campus", value=0, step=1)
             user_input["Sexo"] = st.number_input("Código de Sexo", value=0, step=1)
         with g2:
+            pass
             #user_input["AnioIngreso"] = st.number_input("Año de Ingreso", value=2024, step=1)
             #user_input["CicloIngreso"] = st.selectbox("Ciclo de Ingreso", [1, 2])
             #user_input["InstitucionBach"] = st.number_input("Código Institución Bachillerato", value=0, step=1)
