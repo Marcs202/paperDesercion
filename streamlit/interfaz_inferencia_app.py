@@ -58,19 +58,19 @@ user_input = {}
 
 with st.form("form_prediccion"):
 
-    # ── Sección 1: Datos Generales del Estudiante (comentada - no se usa para predicción) ──
-    # with st.expander(" Datos Generales del Estudiante", expanded=False):
-    #     g1, g2 = st.columns(2)
-    #     with g1:
-    #         user_input["Carrera"] = st.number_input("Código de Carrera", value=0, step=1)
-    #         user_input["Plan"] = st.number_input("Código de Plan", value=0, step=1)
-    #         user_input["IdCampus"] = st.number_input("ID Campus", value=0, step=1)
-    #         user_input["Sexo"] = st.number_input("Código de Sexo", value=0, step=1)
-    #     with g2:
-    #         user_input["AnioIngreso"] = st.number_input("Año de Ingreso", value=2024, step=1)
-    #         user_input["CicloIngreso"] = st.selectbox("Ciclo de Ingreso", [1, 2])
-    #         user_input["InstitucionBach"] = st.number_input("Código Institución Bachillerato", value=0, step=1)
-    #         user_input["PAES_Score"] = st.number_input("Puntaje PAES", value=0.0, step=0.01, format="%.2f")
+    # ── Sección 1: Datos Generales del Estudiante ──
+    with st.expander(" Datos Generales del Estudiante", expanded=False):
+        g1, g2 = st.columns(2)
+        with g1:
+           # user_input["Carrera"] = st.number_input("Código de Carrera", value=0, step=1)
+            #user_input["Plan"] = st.number_input("Código de Plan", value=0, step=1)
+            user_input["IdCampus"] = st.number_input("ID Campus", value=0, step=1)
+            user_input["Sexo"] = st.number_input("Código de Sexo", value=0, step=1)
+        with g2:
+            #user_input["AnioIngreso"] = st.number_input("Año de Ingreso", value=2024, step=1)
+            #user_input["CicloIngreso"] = st.selectbox("Ciclo de Ingreso", [1, 2])
+            #user_input["InstitucionBach"] = st.number_input("Código Institución Bachillerato", value=0, step=1)
+            #user_input["PAES_Score"] = st.number_input("Puntaje PAES", value=0.0, step=0.01, format="%.2f")
 
     # ── Sección 3: Rendimiento Ciclo 1 (comentada - no se usa para predicción) ──
     # with st.expander(" Rendimiento Académico - Ciclo 1", expanded=False):
@@ -119,19 +119,19 @@ with st.form("form_prediccion"):
     #         user_input["CantInsolvencias_Recurrentes"] = st.number_input("Insolvencias Recurrentes", value=0, step=1)
     #         user_input["CantCambiosCarrera"] = st.number_input("Cantidad Cambios de Carrera", value=0, step=1)
 
-    # ── Sección 7: Indicadores IRE ──
-    with st.expander(" Indicadores IRE", expanded=False):
-        i1, i2, i3 = st.columns(3)
-        bin_labels = {
-            "Ind_PAES": "PAES", "Ind_CUM": "CUM", "Ind_Avance": "Avance",
-            "Ind_Solvencia": "Solvencia", "Ind_RetiroParcial": "Retiro Parcial",
-            "Ind_RetiroTotal": "Retiro Total", "Ind_CambioCarrera": "Cambio Carrera",
-            "Ind_Reprobacion": "Reprobación", "Ind_BrechaDesercion": "Brecha Deserción",
-        }
-        bin_cols = [i1, i2, i3]
-        for idx, (key, label) in enumerate(bin_labels.items()):
-            with bin_cols[idx % 3]:
-                user_input[key] = st.selectbox(f"Ind. {label}", [0, 1], format_func=lambda x: "Sí" if x == 1 else "No", key=key)
+    # ── Sección 7: Indicadores IRE (comentada - no se usa para predicción) ──
+    # with st.expander(" Indicadores IRE", expanded=False):
+    #     i1, i2, i3 = st.columns(3)
+    #     bin_labels = {
+    #         "Ind_PAES": "PAES", "Ind_CUM": "CUM", "Ind_Avance": "Avance",
+    #         "Ind_Solvencia": "Solvencia", "Ind_RetiroParcial": "Retiro Parcial",
+    #         "Ind_RetiroTotal": "Retiro Total", "Ind_CambioCarrera": "Cambio Carrera",
+    #         "Ind_Reprobacion": "Reprobación", "Ind_BrechaDesercion": "Brecha Deserción",
+    #     }
+    #     bin_cols = [i1, i2, i3]
+    #     for idx, (key, label) in enumerate(bin_labels.items()):
+    #         with bin_cols[idx % 3]:
+    #             user_input[key] = st.selectbox(f"Ind. {label}", [0, 1], format_func=lambda x: "Sí" if x == 1 else "No", key=key)
 
     submitted = st.form_submit_button("Predecir Deserción", type="primary")
 
