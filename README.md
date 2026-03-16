@@ -1,9 +1,9 @@
 # paperDesercion
 
-# Enlaces de importancia:
-  Paper IEEE: https://www.overleaf.com/1826573698cddsbrtmmdjc#af3bec
-  Modelo en prueba: https://paperdesercion-jhhedrgevpfntefdto2mdc.streamlit.app/
-
+## 🚀 Enlaces del Proyecto
+* **Aplicación Interactiva:** [Prototipo en Streamlit](https://paperdesercion-jhhedrgevpfntefdto2mdc.streamlit.app/)
+* **Documentación Científica:** [Paper en Formato IEEE (Overleaf)](https://www.overleaf.com/1826573698cddsbrtmmdjc#af3bec)
+  
 # Licencia de Software Propietario
 
 Copyright (c) 2026 [Raul Arevalo, Marcos Hernandez y Kevin Ponce]
