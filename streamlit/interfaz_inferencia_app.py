@@ -65,7 +65,7 @@ with st.form("form_prediccion"):
            # user_input["Carrera"] = st.number_input("Código de Carrera", value=0, step=1)
             #user_input["Plan"] = st.number_input("Código de Plan", value=0, step=1)
             user_input["IdCampus"] = st.number_input("ID Campus", value=0, step=1)
-            user_input["Sexo"] = st.number_input("Código de Sexo", value=0, step=1)
+            user_input["Sexo"] = st.selectbox("Sexo", [1, 2], format_func=lambda x: "Masculino" if x == 1 else "Femenino")
         with g2:
             pass
             #user_input["AnioIngreso"] = st.number_input("Año de Ingreso", value=2024, step=1)
