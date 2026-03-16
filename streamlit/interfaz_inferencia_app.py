@@ -38,10 +38,10 @@ feature_labels = {
     'num__TotalMateriasAprobadas_Anio1': ("Total Materias Aprobadas Año 1", 'number'),
     'num__TotalMateriasInscritas_Anio1': ("Total Materias Inscritas Año 1", 'number'),
     'cat_low__Ind_CambioCarrera_1': ("¿Cambió de carrera? (0=No, 1=Sí)", 'select'),
-    'PromedioGeneral_Anio1': ("Promedio General Año 1", 'number'),
-    'TotalMateriasReprobadas_Anio1': ("Total Materias Reprobadas Año 1", 'number'),
-    'IRE_Total': ("Índice de Rendimiento Estudiantil Total (IRE)", 'number'),
-    'CantRetirosParciales': ("Cantidad de Retiros Parciales", 'number'),
+    'num__PromedioGeneral_Anio1': ("Promedio General Año 1", 'number'),
+    'num__TotalMateriasReprobadas_Anio1': ("Total Materias Reprobadas Año 1", 'number'),
+    'num__IRE_Total': ("Índice de Rendimiento Estudiantil Total (IRE)", 'number'),
+    'num__CantRetirosParciales': ("Cantidad de Retiros Parciales", 'number'),
 }
 
 
@@ -64,16 +64,16 @@ features_a_excluir = [
 user_input = {}
 
 with st.form("form_prediccion"):
-    # Filtrar features activas
-    features_activas = [f for f in feature_columns if f not in features_a_excluir]
+    # Filtrar features activas del modelo (no excluidas)
+    todas_features = [f for f in feature_columns if f not in features_a_excluir]
 
     # Mostrar en grid de 2 columnas
-    for i in range(0, len(features_activas), 2):
+    for i in range(0, len(todas_features), 2):
         cols = st.columns(2)
         for j, col in enumerate(cols):
             idx = i + j
-            if idx < len(features_activas):
-                feat = features_activas[idx]
+            if idx < len(todas_features):
+                feat = todas_features[idx]
                 label, tipo = feature_labels.get(feat, (feat, 'number'))
                 with col:
                     if tipo == 'number':
@@ -85,7 +85,7 @@ with st.form("form_prediccion"):
 
 if submitted:
     try:
-        # Solo usar features que no están excluidas
+        # Usar todas las features activas para la predicción
         features_usar = [f for f in feature_columns if f not in features_a_excluir]
         input_df = pd.DataFrame([user_input])[features_usar]
         prediction = model.predict(input_df)[0]
