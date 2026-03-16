@@ -52,20 +52,8 @@ user_input = {}
 
 with st.form("form_prediccion"):
 
-    # ── Sección 1: Indicadores Clave ──
-    st.markdown("#### 📊 Indicadores Clave de Rendimiento")
-    c1, c2 = st.columns(2)
-    with c1:
-        user_input["PromedioGeneral_Anio1"] = st.number_input("Promedio General Año 1", value=0.0, step=0.01, format="%.2f")
-        user_input["IRE_Total"] = st.number_input("Índice de Rendimiento Estudiantil (IRE Total)", value=0, step=1)
-    with c2:
-        user_input["TotalMateriasReprobadas_Anio1"] = st.number_input("Total Materias Reprobadas Año 1", value=0, step=1)
-        user_input["CantRetirosParciales"] = st.number_input("Cantidad de Retiros Parciales", value=0, step=1)
-
-    st.divider()
-
-    # ── Sección 2: Datos Generales del Estudiante ──
-    with st.expander("📋 Datos Generales del Estudiante", expanded=False):
+    # ── Sección 1: Datos Generales del Estudiante ──
+    with st.expander(" Datos Generales del Estudiante", expanded=False):
         g1, g2 = st.columns(2)
         with g1:
             user_input["Carrera"] = st.number_input("Código de Carrera", value=0, step=1)
@@ -79,7 +67,7 @@ with st.form("form_prediccion"):
             user_input["PAES_Score"] = st.number_input("Puntaje PAES", value=0.0, step=0.01, format="%.2f")
 
     # ── Sección 3: Rendimiento Ciclo 1 ──
-    with st.expander("📘 Rendimiento Académico - Ciclo 1", expanded=False):
+    with st.expander(" Rendimiento Académico - Ciclo 1", expanded=False):
         r1, r2 = st.columns(2)
         with r1:
             user_input["MateriasInscritas_C1"] = st.number_input("Materias Inscritas C1", value=0, step=1)
@@ -90,7 +78,7 @@ with st.form("form_prediccion"):
             user_input["PromedioCiclo_C1"] = st.number_input("Promedio Ciclo 1", value=0.0, step=0.01, format="%.2f")
 
     # ── Sección 4: Rendimiento Ciclo 2 ──
-    with st.expander("📗 Rendimiento Académico - Ciclo 2", expanded=False):
+    with st.expander(" Rendimiento Académico - Ciclo 2", expanded=False):
         s1, s2 = st.columns(2)
         with s1:
             user_input["MateriasInscritas_C2"] = st.number_input("Materias Inscritas C2", value=0, step=1)
@@ -101,28 +89,32 @@ with st.form("form_prediccion"):
             user_input["PromedioCiclo_C2"] = st.number_input("Promedio Ciclo 2", value=0.0, step=0.01, format="%.2f")
 
     # ── Sección 5: Resumen Año 1 ──
-    with st.expander("📊 Resumen Académico Año 1", expanded=False):
+    with st.expander(" Resumen Académico Año 1", expanded=False):
         a1, a2 = st.columns(2)
         with a1:
             user_input["TotalMateriasInscritas_Anio1"] = st.number_input("Total Materias Inscritas Año 1", value=0, step=1)
             user_input["TotalMateriasAprobadas_Anio1"] = st.number_input("Total Materias Aprobadas Año 1", value=0, step=1)
+            user_input["TotalMateriasReprobadas_Anio1"] = st.number_input("Total Materias Reprobadas Año 1", value=0, step=1)
             user_input["TasaAprobacion_Anio1"] = st.number_input("Tasa Aprobación Año 1", value=0.0, step=0.01, format="%.2f")
         with a2:
+            user_input["PromedioGeneral_Anio1"] = st.number_input("Promedio General Año 1", value=0.0, step=0.01, format="%.2f")
             user_input["AvanceCarrera_FinAnio1"] = st.number_input("Avance de Carrera Fin Año 1 (%)", value=0.0, step=0.01, format="%.2f")
+            user_input["IRE_Total"] = st.number_input("Índice de Rendimiento Estudiantil (IRE Total)", value=0, step=1)
 
     # ── Sección 6: Becas y Retiros ──
-    with st.expander("💰 Becas, Retiros e Insolvencias", expanded=False):
+    with st.expander(" Becas, Retiros e Insolvencias", expanded=False):
         b1, b2 = st.columns(2)
         with b1:
             user_input["TieneBeca"] = st.selectbox("¿Tiene Beca?", [0, 1], format_func=lambda x: "Sí" if x == 1 else "No")
             user_input["PorcentajeBeca_Promedio"] = st.number_input("Porcentaje Beca Promedio", value=0.0, step=0.01, format="%.2f")
+            user_input["CantRetirosParciales"] = st.number_input("Cantidad de Retiros Parciales", value=0, step=1)
             user_input["CantRetirosTotales"] = st.number_input("Cantidad Retiros Totales", value=0, step=1)
         with b2:
             user_input["CantInsolvencias_Recurrentes"] = st.number_input("Insolvencias Recurrentes", value=0, step=1)
             user_input["CantCambiosCarrera"] = st.number_input("Cantidad Cambios de Carrera", value=0, step=1)
 
-    # ── Sección 7: Indicadores Binarios ──
-    with st.expander("🔘 Indicadores Binarios", expanded=False):
+    # ── Sección 7: Indicadores IRE ──
+    with st.expander(" Indicadores IRE", expanded=False):
         i1, i2, i3 = st.columns(3)
         bin_labels = {
             "Ind_PAES": "PAES", "Ind_CUM": "CUM", "Ind_Avance": "Avance",
@@ -154,7 +146,7 @@ if submitted:
         with col3:
             st.metric("Prob. Permanencia", f"{probability[0]:.1%}")
         if prediction == 1:
-            st.error("⚠️ ALERTA: Este estudiante tiene alta probabilidad de desertar. Se recomienda intervención temprana.")
+            st.error(" ALERTA: Este estudiante tiene alta probabilidad de desertar. Se recomienda intervención temprana.")
         else:
             st.info("Este estudiante tiene baja probabilidad de desertar.")
         st.divider()
