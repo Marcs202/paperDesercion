@@ -1,7 +1,8 @@
 # paperDesercion
 
-
-https://www.overleaf.com/1826573698cddsbrtmmdjc#af3bec
+# Enlaces de importancia:
+  Paper IEEE: https://www.overleaf.com/1826573698cddsbrtmmdjc#af3bec
+  Modelo en prueba: https://paperdesercion-jhhedrgevpfntefdto2mdc.streamlit.app/
 
 # Licencia de Software Propietario
 
