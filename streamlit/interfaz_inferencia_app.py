@@ -16,10 +16,16 @@ def load_model():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     model = joblib.load(os.path.join(BASE_DIR, 'modelo_final_desercion.pkl'))
     feature_columns = joblib.load(os.path.join(BASE_DIR, 'feature_columns.pkl'))
-    return model, feature_columns
+    # Valores por defecto (medianas/modas) para columnas que el usuario no llena
+    defaults_path = os.path.join(BASE_DIR, 'feature_defaults.pkl')
+    if os.path.exists(defaults_path):
+        feature_defaults = joblib.load(defaults_path)
+    else:
+        feature_defaults = {}
+    return model, feature_columns, feature_defaults
 
 try:
-    model, feature_columns = load_model()
+    model, feature_columns, feature_defaults = load_model()
     model_name = "Modelo Final Deserción"
 except FileNotFoundError:
     st.error("No se encontraron los archivos del modelo (modelo_final_desercion.pkl, feature_columns.pkl).")
@@ -132,8 +138,8 @@ with st.form("form_prediccion"):
 
 if submitted:
     try:
-        # Construir DataFrame con TODAS las columnas originales que el Pipeline espera
-        input_df = pd.DataFrame([{col: user_input.get(col, 0) for col in ALL_COLUMNS}])
+        # Construir DataFrame: usa el valor del usuario si existe, si no usa la mediana/moda del dataset
+        input_df = pd.DataFrame([{col: user_input.get(col, feature_defaults.get(col, 0)) for col in ALL_COLUMNS}])
         prediction = model.predict(input_df)[0]
         probability = model.predict_proba(input_df)[0]
 
