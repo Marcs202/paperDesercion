@@ -106,7 +106,7 @@ with st.form("form_prediccion"):
         with a2:
             user_input["PromedioGeneral_Anio1"] = st.number_input("Promedio General Año 1", value=0.0, step=0.01, format="%.2f")
             user_input["AvanceCarrera_FinAnio1"] = st.number_input("Avance de Carrera Fin Año 1 (%)", value=0.0, step=0.01, format="%.2f")
-            user_input["IRE_Total"] = st.number_input("Índice de Rendimiento Estudiantil (IRE Total)", value=0, step=1)
+            user_input["IRE_Total"] = st.number_input("Ín"PromedioGeneral_Anio1"dice de Rendimiento Estudiantil (IRE Total)", value=0, step=1)
 
     # ── Sección 6: Becas y Retiros (comentada - no se usa para predicción) ──
     # with st.expander(" Becas, Retiros e Insolvencias", expanded=False):
