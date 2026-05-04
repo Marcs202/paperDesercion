@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
-
+import time  # Importante para medir el tiempo
+from waitress import serve
 # Definir la clase APIModel (debe estar ANTES de cargar el .pkl)
 class APIModel:
     def __init__(self, pipeline):
@@ -19,68 +20,63 @@ class APIModel:
     def predict_proba(self, X):
         return self.pipeline.predict_proba(self._add_ire_malo(X))
 
-# Crear instancia de la aplicación Flask
 app = Flask(__name__)
 
-# Cargar el modelo 
 print("Cargando modelo...")
 model = joblib.load('modelo_api_desercion.pkl')
 print("Modelo cargado exitosamente")
 
-# Las 10 columnas exactas que espera el modelo ligero
 REQUIRED_FIELDS = [
-    'IdCampus', 
-    'Sexo', 
-    'TotalMateriasInscritas_Anio1',
-    'TotalMateriasAprobadas_Anio1', 
-    'TotalMateriasReprobadas_Anio1',
-    'MateriasAprobadas_C2',
-    'TasaAprobacion_Anio1', 
-    'PromedioGeneral_Anio1',
-    'AvanceCarrera_FinAnio1', 
-    'IRE_Total'
+    'IdCampus', 'Sexo', 'TotalMateriasInscritas_Anio1',
+    'TotalMateriasAprobadas_Anio1', 'TotalMateriasReprobadas_Anio1',
+    'MateriasAprobadas_C2', 'TasaAprobacion_Anio1', 
+    'PromedioGeneral_Anio1', 'AvanceCarrera_FinAnio1', 'IRE_Total'
 ]
 
-# Ruta principal - endpoint para predicciones
 @app.route('/predict', methods=['POST'])
 def predict():
-    """
-    Endpoint principal para realizar predicciones.
-    Espera un JSON con los 10 datos del estudiante.
-    """
+    # --- INICIO DE MEDICIÓN ---
+    start_time = time.time() 
+    
     try:
         data = request.get_json()
 
-        # Validar qué campos faltan exactamente
+        # Validar campos faltantes
         faltantes = [field for field in REQUIRED_FIELDS if field not in data]
         if faltantes:
             return jsonify({
                 'error': 'Faltan campos requeridos en el JSON',
-                'campos_faltantes': faltantes,
-                'campos_requeridos': REQUIRED_FIELDS
+                'campos_faltantes': faltantes
             }), 400
 
-        # Crear DataFrame directamente con el orden correcto
-        # El pipeline de scikit-learn se encargará del One-Hot y el escalado
+        # Crear DataFrame y predecir
         input_df = pd.DataFrame([data])[REQUIRED_FIELDS]
-
-        # Realizar predicción
         prediction = model.predict(input_df)[0]
         probability = model.predict_proba(input_df)[0]
 
-        # Construir respuesta
+        # --- FIN DE MEDICIÓN ---
+        end_time = time.time()
+        # Tiempo en milisegundos
+        # ... dentro de tu ruta /predict ...
+        execution_time_ms = (end_time - start_time) * 1000 
+
         result = {
             'prediction': int(prediction),
             'prediction_label': 'Riesgo de deserción' if prediction == 1 else 'Continúa estudios',
             'probabilidad_desercion': float(probability[1]),
-            'probabilidad_retencion': float(probability[0])
+            'probabilidad_retencion': float(probability[0]),
+            'stats': {
+                # Enviamos el número puro para el test y el paper
+                'server_process_time_val': round(execution_time_ms, 2),
+                'display_time': f'{round(execution_time_ms, 2)} ms'
+            }
         }
-
+        
         return jsonify(result), 200
 
     except Exception as e:
         return jsonify({
-            'error': 'Error interno del servidor al procesar la predicción',
+            'error': 'Error interno del servidor',
             'detalles': str(e)
         }), 500
 
@@ -140,4 +136,4 @@ def info():
 if __name__ == '__main__':
     # host='0.0.0.0' permite acceso desde cualquier IP
     # port=5000 es el puerto por defecto
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    serve(app, host='0.0.0.0', port=5000, threads=6)
