@@ -2,23 +2,6 @@ from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
 
-# Definir la clase APIModel (debe estar ANTES de cargar el .pkl)
-class APIModel:
-    def __init__(self, pipeline):
-        self.pipeline = pipeline
-    
-    def _add_ire_malo(self, X):
-        X = X.copy()
-        X['IRE_malo'] = (X['IRE_Total'] - 5).clip(lower=0)
-        X = X.drop(columns=['IRE_Total'])
-        return X
-    
-    def predict(self, X):
-        return self.pipeline.predict(self._add_ire_malo(X))
-    
-    def predict_proba(self, X):
-        return self.pipeline.predict_proba(self._add_ire_malo(X))
-
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
 
