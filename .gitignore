@@ -1,3 +1,5 @@
 logs/
 *.pdf
 *.png
+*.config
+*.pyc
