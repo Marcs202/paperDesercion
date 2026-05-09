@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
-
+from waitress import  serve
+import time
 # Crear instancia de la aplicación Flask
 app = Flask(__name__)
 
@@ -31,6 +32,7 @@ def predict():
     Endpoint principal para realizar predicciones.
     Espera un JSON con los 10 datos del estudiante.
     """
+    start_time = time.time() 
     try:
         data = request.get_json()
 
@@ -50,13 +52,19 @@ def predict():
         # Realizar predicción
         prediction = model.predict(input_df)[0]
         probability = model.predict_proba(input_df)[0]
-
+        end_time = time.time()
+        execution_time_ms = (end_time - start_time) * 1000
         # Construir respuesta
         result = {
             'prediction': int(prediction),
             'prediction_label': 'Riesgo de deserción' if prediction == 1 else 'Continúa estudios',
             'probabilidad_desercion': float(probability[1]),
-            'probabilidad_retencion': float(probability[0])
+            'probabilidad_retencion': float(probability[0]),
+            'stats': {
+                # Enviamos el número puro para el test y el paper
+                'server_process_time_val': round(execution_time_ms, 2),
+                'display_time': f'{round(execution_time_ms, 2)} ms'
+            }
         }
 
         return jsonify(result), 200
@@ -123,4 +131,4 @@ def info():
 if __name__ == '__main__':
     # host='0.0.0.0' permite acceso desde cualquier IP
     # port=5000 es el puerto por defecto
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    serve(app, host='0.0.0.0', port=5000, threads=6)
